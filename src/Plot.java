@@ -1,40 +1,45 @@
+// import Processing core features again
 import processing.core.PApplet;
 import processing.core.PImage;
 
+// class representing a single plot of soil in the garden
 public class Plot {
+
+    // the plant currently growing in this plot (null if empty)
     public Plant plant = null;
+
+    // whether the plot has been watered for the day
     public boolean watered = false;
+
+    // whether the plot is dead and unusable
     public boolean dead = false;
 
-    public void drawPlot(PApplet app, int x, int y, PImage plotBase, PImage plotWet, PImage deadImage, PImage[] plotImages) {
-        if(dead) {
-            app.image(deadImage, x, y);
-        } else if(watered) {
-            app.image(plotWet, x, y);
-        } else {
-            app.image(plotBase, x, y);
-        }
+    // draws the plot and plant sprites at the given position
+    public void drawPlot(PApplet app, int x, int y, PImage plotBase, PImage plotWet, PImage plotDead, PImage[] plotImages) {
 
-        if(plant != null && !dead) {
-            int stageIndex = 0;
-            switch(plant.stage) {
-                case "Seed": stageIndex = 0; break;
-                case "Sprout": stageIndex = 1; break;
-                case "Mature": stageIndex = 2; break;
-                case "Harvest": stageIndex = 3; break;
-            }
-            app.image(plotImages[plant.type*4 + stageIndex], x, y);
-        }
-    }
+        // choose the correct soil image depending on state
+        if(dead)
+            app.image(plotDead, x, y);   // dead soil graphic
+        else if(watered)
+            app.image(plotWet, x, y);    // freshly watered graphic
+        else
+            app.image(plotBase, x, y);   // default dry soil graphic
 
-    public void checkWatering() {
-        if(plant != null && !watered && !dead) {
-            dead = true;
-            plant = null;
-        }
-    }
 
-    public void resetWatering() {
-        if(!dead) watered = false;
+        // draw plant only if there is one & plot is not occupied by dead
+        if(plant != null && !dead){
+
+            // convert the plant’s growth stage into an array index
+            int stageIndex = switch(plant.stage){
+                case "Seed" -> 0;
+                case "Sprout" -> 1;
+                case "Mature" -> 2;
+                case "Harvest" -> 3;
+                default -> 0; // fallback, should never happen
+            };
+
+            // each plant type occupies 4 consecutive images in the array
+            app.image(plotImages[plant.type * 4 + stageIndex], x, y);
+        }
     }
 }
