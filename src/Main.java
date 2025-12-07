@@ -286,7 +286,7 @@ public class Main extends PApplet {
 
         for(int i=0;i<PLANT_TYPES.length;i++)
             sb.append(PLANT_TYPES[i]).append(" Harvested: ").append(harvested[i])
-                    .append("! Died: ").append(died[i]).append("\n");
+                    .append("; Died: ").append(died[i]).append("\n");
 
         // show results
         JOptionPane.showMessageDialog(null,sb.toString());
