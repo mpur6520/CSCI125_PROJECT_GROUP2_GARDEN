@@ -200,7 +200,7 @@ public class Main extends PApplet {
                     else if(p.plant!=null){
                         if(p.plant.stage.equals("Harvest")){
                             harvested[p.plant.type]++;
-                            points += p.plant.type+1;
+                            points += p.plant.type+2;
                             p.plant=null;
                             p.watered=false;
                         } else {
